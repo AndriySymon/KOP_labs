@@ -4,17 +4,16 @@ import StartPage from "./pages/StartPage";
 import GamePage from "./pages/GamePage";
 import ResultsPage from "./pages/ResultsPage";
 import "./index.css";
+import { useNavigation } from "./hooks/useNavigation";
 
 function App() {
-  const [page, setPage] = useState("start");
-
-  const goTo = (p) => setPage(p);
+  const { page, goToStart, goToGame, goToResults } = useNavigation();
 
   return (
     <div className="app">
-      {page === "start" && <StartPage onStart={() => goTo("game")} />}
-      {page === "game" && <GamePage onFinish={() => goTo("results")} />}
-      {page === "results" && <ResultsPage onRestart={() => goTo("start")} />}
+      {page === "start" && <StartPage onStart={goToGame} />}
+      {page === "game" && <GamePage onFinish={goToResults} />}
+      {page === "results" && <ResultsPage onRestart={goToStart} />}
     </div>
   );
 }
