@@ -1,15 +1,31 @@
 import React from "react";
+import { useGameLogic } from "../hooks/useGameLogic";
+import { useTimer } from "../hooks/useTimer";
 import Layout from "../components/Layout";
 import Board from "../components/Board";
 import Button from "../components/Button";
 
 export default function GamePage({ onFinish }) {
+  const { tiles, moves, gameStatus, startGame, moveTile } = useGameLogic();
+  const { seconds, reset } = useTimer(gameStatus === "playing");
+
+  React.useEffect(() => {
+    startGame();
+    reset();
+  }, []);
+
+  React.useEffect(() => {
+    if (gameStatus === "finished") {
+      onFinish();
+    }
+  }, [gameStatus]);
+
   return (
-    <Layout title="Гра П’ятнашки">
-      <Board />
-      <div style={{ marginTop: "20px" }}>
-        <Button onClick={onFinish}>Завершити гру</Button>
-      </div>
-    </Layout>
+    <div className="game-page">
+      <h2>Рахунок: {moves}</h2>
+      <h3>Час: {seconds} c</h3>
+      <Board tiles={tiles} onTileClick={moveTile} />
+      <Button onClick={onFinish}>Завершити</Button>
+    </div>
   );
 }
