@@ -2,11 +2,24 @@ import React from "react";
 import Layout from "../components/Layout";
 import Button from "../components/Button";
 
-export default function ResultsPage({ onRestart }) {
+export default function ResultsPage({ onRestart, results }) {
   return (
-    <Layout title="Результати">
-      <p>Ваш результат: 00:00</p>
-      <Button onClick={onRestart}>Повернутись на старт</Button>
-    </Layout>
+    <div className="results-page">
+      {results.success ? (
+        <>
+          <h2>Вітаємо! Ви зібрали всі плитки</h2>
+          <p>Кількість ходів: {results.moves}</p>
+          <p>Час гри: {results.time} секунд</p>
+        </>
+      ) : (
+        <>
+          <h2>Гра завершена!</h2>
+          <p>Плитки не зібрані правильно</p>
+          <p>Кількість ходів: {results.moves}</p>
+          <p>Час гри: {results.time} секунд</p>
+        </>
+      )}
+      <Button onClick={onRestart}>Почати заново</Button>
+    </div>
   );
 }
