@@ -8,12 +8,18 @@ import { useNavigation } from "./hooks/useNavigation";
 
 function App() {
   const { page, goToStart, goToGame, goToResults } = useNavigation();
+  const [results, setResults] = useState({success: false, time: 0, moves: 0});
+
+  const handleFinish = (res) => {
+    setResults(res);
+    goToResults();
+  };
 
   return (
     <div className="app">
       {page === "start" && <StartPage onStart={goToGame} />}
-      {page === "game" && <GamePage onFinish={goToResults} />}
-      {page === "results" && <ResultsPage onRestart={goToStart} />}
+      {page === "game" && <GamePage onFinish={handleFinish} />}
+      {page === "results" && <ResultsPage onRestart={goToStart} results={results} />}
     </div>
   );
 }

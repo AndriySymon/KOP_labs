@@ -16,16 +16,22 @@ export default function GamePage({ onFinish }) {
 
   React.useEffect(() => {
     if (gameStatus === "finished") {
-      onFinish();
+      onFinish({success: true, time: seconds. moves});
     }
   }, [gameStatus]);
+
+  const handleFinishClick = () => {
+    if (gameStatus === "playing") {
+      onFinish({success: false, time: seconds, moves});
+    }
+  };
 
   return (
     <div className="game-page">
       <h2>Рахунок: {moves}</h2>
       <h3>Час: {seconds} c</h3>
       <Board tiles={tiles} onTileClick={moveTile} />
-      <Button onClick={onFinish}>Завершити</Button>
+      <Button onClick={handleFinishClick}>Завершити</Button>
     </div>
   );
 }

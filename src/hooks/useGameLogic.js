@@ -9,24 +9,34 @@ export function useGameLogic() {
   const startGame = () => {
     const shuffled = Array.from({ length: 15 }, (_, i) => i + 1)
       .sort(() => Math.random() - 0.5);
-    setTiles([...shuffled, null]);
+    setTiles([...shuffled, null]); 
     setMoves(0);
     setGameStatus("playing");
   };
 
+  // Перевірка виграшу
   useEffect(() => {
-    const isWin = tiles.slice(0, 15).every((t, i) => t === i + 1);
-    if (isWin && gameStatus === "playing") {
-      setGameStatus("finished");
+    if (tiles.length === 16) {
+      const isWin = tiles.slice(0, 15).every((t, i) => t === i + 1);
+      if (isWin && gameStatus === "playing") {
+        setGameStatus("finished");
+      }
     }
-  }, [tiles]);
+  }, [tiles, gameStatus]);
 
+  // Логіка переміщення плитки
   const moveTile = (index) => {
     const emptyIndex = tiles.indexOf(null);
+
+    const row = Math.floor(index / 4);
+    const col = index % 4;
+    const emptyRow = Math.floor(emptyIndex / 4);
+    const emptyCol = emptyIndex % 4;
+
+    // Перевіряємо, чи сусідні клітинки (по вертикалі або горизонталі)
     const isAdjacent =
-      [1, -1, 4, -4].some(
-        (offset) => index + offset === emptyIndex
-      );
+      (row === emptyRow && Math.abs(col - emptyCol) === 1) ||
+      (col === emptyCol && Math.abs(row - emptyRow) === 1);
 
     if (isAdjacent) {
       const newTiles = [...tiles];
