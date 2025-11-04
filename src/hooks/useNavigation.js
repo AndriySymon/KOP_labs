@@ -5,7 +5,7 @@ export function useNavigation() {
 
   const goToStart = () => setPage("start");
   const goToGame = () => setPage("game");
-  const goToResults = () => setPage("results");
+  const goToSettings = () => setPage("settings");
 
-  return { page, goToStart, goToGame, goToResults };
+  return { page, goToStart, goToGame, goToSettings };
 }
