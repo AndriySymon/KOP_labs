@@ -19,6 +19,19 @@ body, html {
   margin-bottom: 20px;
 }
 
+.checkbox-label {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  margin-top: 10px;
+  position: relative; right: 38px;
+  gap: 8px;
+}
+
+.difficulty {
+  margin-left: 10px;
+}
+
 .btn {
   background: #0ea5ff;
   border: none;
@@ -27,18 +40,13 @@ body, html {
   border-radius: 8px;
   cursor: pointer;
   font-size: 1rem;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  margin-right: 5px;
 }
 
 .btn:hover {
   background: #0284c7;
-}
-
-.board {
-  display: grid;
-  grid-template-columns: repeat(4, 70px);
-  grid-template-rows: repeat(4, 70px);
-  gap: 8px;
-  justify-content: center;
 }
 
 .tile {
@@ -59,4 +67,103 @@ body, html {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.modal-overlay {
+  position: fixed;     
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.7); 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;               
+}
+
+.modal {
+  background: #1e293b;       
+  padding: 24px;
+  border-radius: 12px;
+  width: 320px;
+  text-align: center;
+  color: #f5f5f5;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  animation: pop-in 0.3s ease; 
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+@keyframes pop-in {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.settings-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 250px;
+  margin: 0 auto;
+}
+
+.form-input {
+  background: #1e293b;
+  color: #f5f5f5;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  padding: 8px;
+  font-size: 1rem;
+}
+
+.form-input:focus {
+  border-color: #0ea5ff;
+  outline: none;
+}
+
+.form-error {
+  color: #ef4444;
+  font-size: 0.85rem;
+  margin-top: -6px;
+}
+
+.checkbox-input {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #0ea5ff;
+  border-radius: 6px;
+  display: grid;
+  place-content: center;
+  background: transparent;
+  transition: all 0.2s ease;
+}
+
+.checkbox-input:checked {
+  background-color: #0ea5ff;
+  box-shadow: 0 0 5px #0ea5ff;
+}
+
+.checkbox-input:checked::after {
+  content: "✓";
+  color: white;
+  font-size: 14px;
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 16px;
 }
