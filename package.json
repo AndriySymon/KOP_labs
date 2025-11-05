@@ -16,6 +16,8 @@
     "formik": "^2.4.6",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
+    "react-router-dom": "^7.9.5",
+    "styled-components": "^6.1.19",
     "yup": "^1.7.1"
   },
   "devDependencies": {
