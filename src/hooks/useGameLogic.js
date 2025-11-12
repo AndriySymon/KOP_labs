@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import { useSettings } from "../context/SettingsContext";
+import { useGameStore } from "../store/gameStore";
 
 export function useGameLogic() {
-  const { settings } = useSettings();
+  const { settings } = useGameStore();
   const [tiles, setTiles] = useState([]);
   const [moves, setMoves] = useState(0);
   const [gameStatus, setGameStatus] = useState("idle");

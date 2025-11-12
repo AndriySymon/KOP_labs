@@ -46,6 +46,11 @@ export default function StartPage() {
     navigate("/settings");
   };
 
+  const handleResults = () => {
+    navigate("/results");
+  };
+
+
   return (
     <Layout title="П’ятнашки">
       <p>Введіть своє ім’я та натисніть, щоб розпочати гру!</p>
@@ -59,6 +64,7 @@ export default function StartPage() {
       <ButtonGroup>
         <Button onClick={handleStart}>Почати гру</Button>
         <Button onClick={handleSettings}>Налаштування</Button>
+        <Button onClick={handleResults}>Результати</Button>
       </ButtonGroup>
     </Layout>
   );

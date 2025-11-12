@@ -1,8 +1,8 @@
 import React from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useSettings } from "../context/SettingsContext";
 import { useNavigate } from "react-router-dom";
+import { useGameStore } from "../store/gameStore";
 import Button from "../components/Button";
 import styled from "styled-components";
 
@@ -64,7 +64,7 @@ const ButtonGroup = styled.div`
 `;
 
 export default function SettingsPage() {
-  const { settings, setSettings } = useSettings();
+  const { settings, setSettings } = useGameStore();
   const navigate = useNavigate();
 
   const formik = useFormik({
@@ -84,20 +84,30 @@ export default function SettingsPage() {
       <h2>Налаштування гри</h2>
 
       <label>Рівень складності:</label>
-      <Select name="difficulty" value={formik.values.difficulty} onChange={formik.handleChange}>
+      <Select
+        name="difficulty"
+        value={formik.values.difficulty}
+        onChange={formik.handleChange}
+      >
         <option value="easy">Легкий (3x3)</option>
         <option value="normal">Середній (4x4)</option>
         <option value="hard">Складний (5x5)</option>
       </Select>
 
       <CheckboxLabel>
-        <Checkbox name="beginnerMode" checked={formik.values.beginnerMode} onChange={formik.handleChange} />
+        <Checkbox
+          name="beginnerMode"
+          checked={formik.values.beginnerMode}
+          onChange={formik.handleChange}
+        />
         Увімкнути режим для новачка
       </CheckboxLabel>
 
       <ButtonGroup>
         <Button type="submit">Зберегти</Button>
-        <Button type="button" onClick={() => navigate("/")}>Скасувати</Button>
+        <Button type="button" onClick={() => navigate("/")}>
+          Скасувати
+        </Button>
       </ButtonGroup>
     </Form>
   );
