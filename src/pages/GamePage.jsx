@@ -7,6 +7,7 @@ import Board from "../components/Board";
 import Button from "../components/Button";
 import GameOverModal from "../components/GameOverModal";
 import styled from "styled-components";
+import { useGameStore } from "../store/gameStore";
 
 const Wrapper = styled.div`
   text-align: center;
@@ -24,8 +25,10 @@ const Stats = styled.div`
 export default function GamePage() {
   const { username } = useParams();
   const navigate = useNavigate();
+  const settings = useGameStore((state) => state.settings);
   const { tiles, moves, gameStatus, startGame, moveTile, size } = useGameLogic();
   const { seconds, reset, stop } = useTimer(gameStatus === "playing");
+  const addResult = useGameStore((state) => state.addResult);
 
   const [showModal, setShowModal] = useState(false);
   const [results, setResults] = useState(null);
@@ -38,7 +41,8 @@ export default function GamePage() {
   useEffect(() => {
     if (gameStatus === "finished") {
       stop();
-      const res = { success: true, time: seconds, moves };
+      const res = {username, success: true, time: seconds, moves, date: new Date().toLocaleString(), sizeLabel: `${size}x${size}`, beginnerMode: settings.beginnerMode, };
+      addResult(res);
       setResults(res);
       setShowModal(true);
     }
@@ -46,7 +50,8 @@ export default function GamePage() {
 
   const handleFinishClick = () => {
     stop();
-    const res = { success: false, time: seconds, moves };
+    const res = {username, success: false, time: seconds, moves, date: new Date().toLocaleString(), sizeLabel: `${size}x${size}`, beginnerMode: settings.beginnerMode, };
+    addResult(res);
     setResults(res);
     setShowModal(true);
   };
