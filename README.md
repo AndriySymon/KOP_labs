@@ -88,6 +88,11 @@ This project is licensed under the MIT License.
 See the [LICENSE](LICENSE) file for details.
 
 ---
+## Legal & Privacy
+
+- [Privacy Policy & User Instructions](./PRIVACY_POLICY.md)
+
+---
 ## Author
 
 Andriy Symon
