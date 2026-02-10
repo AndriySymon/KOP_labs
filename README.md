@@ -12,7 +12,8 @@ The goal of the game is to arrange tiles in ascending order using the empty spac
 - React Router v6
 - Zustand
 - styled-components
-- Storybook
+- Storybook (UI component documentation)
+- JSDoc (generated code documentation)
 
 ---
 
@@ -78,7 +79,18 @@ The application follows a clean separation of concerns:
 ---
 ## Documentation
 
-- UI components are documented using Storybook
+- UI components are documented using **Storybook**.
+
+Run:
+```bash
+npm run storybook
+```
+
+- Generated Documentation (JSDoc)
+Run:
+```bash
+npm run docs
+```
 
 - A local documentation walkthrough is provided as a video file (video-demo.mp4)
 ---
@@ -86,6 +98,12 @@ The application follows a clean separation of concerns:
 
 This project is licensed under the MIT License.
 See the [LICENSE](LICENSE) file for details.
+
+---
+## GDPR & Cookies
+
+The application includes a cookie consent popup implemented in accordance with **GDPR** requirements.
+Users can explicitly accept or decline cookies before any non-essential data is stored.
 
 ---
 ## Legal & Privacy
