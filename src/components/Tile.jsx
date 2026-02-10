@@ -1,6 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 
+/**
+ * Styled tile element.
+ */
 const StyledTile = styled.div`
   background: ${({ theme }) => theme.colors.tile};
   display: flex;
@@ -19,6 +22,13 @@ const StyledTile = styled.div`
   }
 `;
 
+/**
+ * Single game tile component.
+ *
+ * @param {Object} props
+ * @param {number|null} props.number - Tile number
+ * @param {function} props.onClick - Click handler
+ */
 export default function Tile({ number, onClick }) {
   return (
     <StyledTile onClick={onClick} className={!number ? "empty" : ""}>

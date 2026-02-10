@@ -3,6 +3,9 @@ import ReactDOM from "react-dom";
 import Button from "./Button";
 import styled from "styled-components";
 
+/**
+ * Fullscreen overlay for modal background.
+ */
 const Overlay = styled.div`
   position: fixed;
   top: 0;
@@ -16,6 +19,9 @@ const Overlay = styled.div`
   z-index: 9999;
 `;
 
+/**
+ * Main modal container.
+ */
 const ModalBox = styled.div`
   background: ${({ theme }) => theme.colors.tile};
   padding: 24px;
@@ -27,6 +33,9 @@ const ModalBox = styled.div`
   animation: pop-in 0.3s ease;
 `;
 
+/**
+ * Container for modal action buttons.
+ */
 const Buttons = styled.div`
   display: flex;
   justify-content: space-between;
@@ -34,6 +43,26 @@ const Buttons = styled.div`
   margin-top: 16px;
 `;
 
+/**
+ * Modal displayed when the game ends.
+ *
+ * Rendered using React Portal.
+ *
+ * @param {Object} props
+ * @param {Object} props.results - Game result data
+ * @param {boolean} props.results.success - Whether the player won
+ * @param {number} props.results.time - Time spent (seconds)
+ * @param {number} props.results.moves - Number of moves
+ * @param {function} props.onRestart - Restart game handler
+ * @param {function} props.onExit - Exit to main menu handler
+ *
+ * @example
+ * <GameOverModal
+ *   results={{ success: true, time: 120, moves: 40 }}
+ *   onRestart={handleRestart}
+ *   onExit={handleExit}
+ * />
+ */
 export default function GameOverModal({ results, onRestart, onExit }) {
   return ReactDOM.createPortal(
     <Overlay>
