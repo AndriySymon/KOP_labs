@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: hooks/useGameLogic.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: hooks/useGameLogic.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { useState, useEffect } from "react";
+import { useGameStore } from "../store/gameStore";
+
+/**
+ * Custom hook that manages the core game logic of the Fifteen Puzzle.
+ *
+ * Responsibilities:
+ * - determines board size based on difficulty
+ * - initializes a solvable or randomized game board
+ * - handles tile movement
+ * - counts player moves
+ * - detects game completion
+ * - manages game status lifecycle
+ *
+ * @returns {Object} Game logic API
+ * @returns {Array&lt;number|null>} tiles Current state of the game board
+ * @returns {number} moves Number of moves made by the player
+ * @returns {string} gameStatus Current game status ("idle" | "playing" | "finished")
+ * @returns {Function} startGame Initializes and starts a new game
+ * @returns {Function} moveTile Handles tile movement by index
+ * @returns {number} size Board size (3x3, 4x4 or 5x5)
+ */
+export function useGameLogic() {
+  /**
+   * Game settings retrieved from global Zustand store.
+   * @type {{ difficulty: string, beginnerMode: boolean }}
+   */
+  const { settings } = useGameStore();
+  /**
+   * Current state of the game board.
+   * @type {[Array&lt;number|null>, Function]}
+   */
+  const [tiles, setTiles] = useState([]);
+  /**
+   * Number of moves made by the player.
+   * @type {[number, Function]}
+   */
+  const [moves, setMoves] = useState(0);
+  /**
+   * Current game status.
+   * Possible values: "idle", "playing", "finished"
+   * @type {[string, Function]}
+   */
+  const [gameStatus, setGameStatus] = useState("idle");
+
+  /**
+   * Board size based on selected difficulty.
+   * easy -> 3x3
+   * normal -> 4x4
+   * hard -> 5x5
+   * @type {number}
+   */
+  const size =
+    settings.difficulty === "easy"
+      ? 3
+      : settings.difficulty === "hard"
+      ? 5
+      : 4;
+
+  /**
+  * Total number of tiles on the board.
+  * @type {number}
+  */
+  const totalTiles = size * size;
+
+  // Ініціалізація гри
+  /**
+   * Initializes and starts a new game.
+   *
+   * In beginner mode, the board is generated from a solved state
+   * using a limited number of valid moves to ensure solvability.
+   *
+   * In normal mode, tiles are shuffled randomly.
+   */
+  const startGame = () => {
+    let generated = Array.from({ length: totalTiles - 1 }, (_, i) => i + 1);
+    generated.push(null);
+
+    if (settings.beginnerMode) {
+      // режим для новачка
+      for (let i = 0; i &lt; 10; i++) {
+        const emptyIndex = generated.indexOf(null);
+        const possibleMoves = [];
+
+        const row = Math.floor(emptyIndex / size);
+        const col = emptyIndex % size;
+
+        if (row > 0) possibleMoves.push(emptyIndex - size);
+        if (row &lt; size - 1) possibleMoves.push(emptyIndex + size);
+        if (col > 0) possibleMoves.push(emptyIndex - 1);
+        if (col &lt; size - 1) possibleMoves.push(emptyIndex + 1);
+
+        const moveIndex =
+          possibleMoves[Math.floor(Math.random() * possibleMoves.length)];
+        [generated[emptyIndex], generated[moveIndex]] = [
+          generated[moveIndex],
+          generated[emptyIndex],
+        ];
+      }
+    } else {
+      //звичайний режим
+      generated = generated.sort(() => Math.random() - 0.5);
+    }
+    setTiles(generated);
+    setMoves(0);
+    setGameStatus("playing");
+  };
+
+  // Перевірка виграшу
+  /**
+   * Checks win condition whenever tiles change.
+   * The game is considered finished when all tiles
+   * are in correct ascending order.
+   */
+  useEffect(() => {
+    if (tiles.length === totalTiles) {
+      const isWin = tiles.slice(0, totalTiles - 1).every((t, i) => t === i + 1);
+      if (isWin &amp;&amp; gameStatus === "playing") {
+        setGameStatus("finished");
+      }
+    }
+  }, [tiles, gameStatus]);
+
+  // Логіка переміщення плитки
+  /**
+   * Handles tile movement logic.
+   * A tile can be moved only if it is adjacent
+   * to the empty cell (horizontally or vertically).
+   *
+   * @param {number} index Index of the clicked tile
+   */
+  const moveTile = (index) => {
+    const emptyIndex = tiles.indexOf(null);
+
+    const row = Math.floor(index / size);
+    const col = index % size;
+    const emptyRow = Math.floor(emptyIndex / size);
+    const emptyCol = emptyIndex % size;
+
+    // Перевіряємо, чи сусідні клітинки (по вертикалі або горизонталі)
+    const isAdjacent =
+      (row === emptyRow &amp;&amp; Math.abs(col - emptyCol) === 1) ||
+      (col === emptyCol &amp;&amp; Math.abs(row - emptyRow) === 1);
+
+    if (isAdjacent) {
+      const newTiles = [...tiles];
+      [newTiles[index], newTiles[emptyIndex]] = [newTiles[emptyIndex], newTiles[index]];
+      setTiles(newTiles);
+      setMoves((m) => m + 1);
+    }
+  };
+
+  return {
+    tiles,
+    moves,
+    gameStatus,
+    startGame,
+    moveTile,
+    size,
+  };
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#Buttons">Buttons</a></li><li><a href="global.html#ModalBox">ModalBox</a></li><li><a href="global.html#Overlay">Overlay</a></li><li><a href="global.html#StyledBoard">StyledBoard</a></li><li><a href="global.html#StyledTile">StyledTile</a></li><li><a href="global.html#addResult">addResult</a></li><li><a href="global.html#results">results</a></li><li><a href="global.html#setSettings">setSettings</a></li><li><a href="global.html#settings">settings</a></li><li><a href="global.html#useGameLogic">useGameLogic</a></li><li><a href="global.html#useGameStore">useGameStore</a></li><li><a href="global.html#useTimer">useTimer</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Tue Feb 10 2026 10:14:58 GMT+0200 (за східноєвропейським стандартним часом)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
