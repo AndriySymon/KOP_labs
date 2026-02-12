@@ -3,6 +3,9 @@
 Web-based implementation of the classic **15-puzzle game** built with React.  
 The goal of the game is to arrange tiles in ascending order using the empty space.
 
+![preview1](./public/images/preview1.png)
+
+![preview2](./public/images/preview2.png)
 ---
 
 ## Tech Stack
@@ -92,7 +95,7 @@ Run:
 npm run docs
 ```
 
-- A local documentation walkthrough is provided as a video file (video-demo.mp4)
+- A local documentation walkthrough is provided as a video file [video-demo.mp4](video-demo.mp4)
 ---
 ## License
 
